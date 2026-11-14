@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dar Soltane - Salle des Fêtes d'Exception</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Great Vibes Font pour le Faire-part -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold-main: #d4af37;
+            --gold-dark: #aa7c11;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+        }
+
+        .font-serif-custom {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .gold-card {
+            background: #ffffff;
+            border: 1px solid #e6ca65;
+            box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .gold-card:hover {
+            border-color: #d4af37;
+            box-shadow: 0 15px 35px -5px rgba(212, 175, 55, 0.3);
+        }
+
+        .gold-text {
+            color: #b8860b;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 50%, #8a6115 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .gold-btn:hover {
+            background: linear-gradient(135deg, #ebd168 0%, #c59b27 100%);
+            box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.5);
+        }
+
+        .gold-outline-btn {
+            border: 2px solid #d4af37;
+            color: #aa7c11;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .gold-outline-btn:hover {
+            background: #d4af37;
+            color: #ffffff;
+        }
+
+        /* Animation d'ouverture d'accueil */
+        @keyframes pulseGold {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.85; }
+        }
+
+        .animate-logo {
+            animation: pulseGold 3s infinite ease-in-out;
+        }
+
+        /* =========================================
+           STYLES POUR LA CARTE D'INVITATION
+           ========================================= */
+        .invitation-card {
+            background-color: #fffdf8;
+            background-image: radial-gradient(#d4af37 0.5px, transparent 0.5px), radial-gradient(#d4af37 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            border: 8px double #d4af37;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .invitation-card::before {
+            content: '';
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            pointer-events: none;
+        }
+
+        .font-cursive {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        /* RÈGLES POUR L'IMPRESSION : Cacher le site et n'imprimer que la carte */
+        @media print {
+            body * {
+                visibility: hidden; /* Cache tout */
+            }
+            #printable-invitation, #printable-invitation * {
+                visibility: visible; /* Affiche uniquement la carte */
+            }
+            #printable-invitation {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: 8px double #d4af37 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-400 selection:text-white">
+
+    <!-- Musique de fond -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="musique.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ÉCRAN D'ACCUEIL D'ANIMATION -->
+    <div id="welcome-screen" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 text-center transition-all duration-700">
+        <div class="max-w-md space-y-6">
+            <img src="Logooo.png" alt="Dar Soltane Logo" class="h-28 mx-auto object-contain animate-logo">
+            
+            <div class="space-y-2">
+                <h1 class="font-serif-custom text-3xl md:text-4xl font-bold gold-gradient-text">Bienvenue à Dar Soltane</h1>
+                <p class="text-gray-500 text-sm">Salle des fêtes d'exception & événements prestigieux</p>
+            </div>
+
+            <button onclick="enterSite()" class="gold-btn px-8 py-4 rounded-full font-bold text-base shadow-2xl flex items-center justify-center gap-3 mx-auto hover:scale-105 transition-all">
+                <i class="fa-solid fa-crown"></i>
+                <span>Entrer dans l'univers Dar Soltane</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Contrôle du son flottant -->
+    <button id="music-toggle" onclick="toggleAudio()" class="fixed top-24 right-6 z-40 bg-white/90 border border-amber-400 text-amber-700 w-11 h-11 rounded-full shadow-lg flex items-center justify-center hover:bg-amber-50 transition-all">
+        <i id="music-icon" class="fa-solid fa-volume-high text-lg"></i>
+    </button>
+
+    <!-- En-tête Navigation -->
+    <header class="fixed top-0 left-0 w-full z-50 glass-header transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3">
+                <img src="Logooo.png" alt="Logo Dar Soltane" class="h-14 w-auto object-contain">
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm gold-text">
+                <a href="#accueil" class="hover:opacity-75 transition-opacity">Accueil</a>
+                <a href="#espaces" class="hover:opacity-75 transition-opacity">Nos Espaces</a>
+                <a href="#galerie" class="hover:opacity-75 transition-opacity">Galerie & Vidéo</a>
+                <a href="#localisation" class="hover:opacity-75 transition-opacity">Localisation</a>
+                <!-- NOUVEAU BOUTON DANS LE MENU -->
+                <button onclick="openInvitationModal()" class="text-amber-600 font-bold hover:text-amber-800 transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-envelope-open-text"></i> Créer un Faire-Part
+                </button>
+            </nav>
+
+            <a href="https://wa.me/213552745204?text=Bonjour,%20je%20souhaite%20me%20renseigner%20sur%20la%20réservation%20de%20la%20salle%20Dar%20Soltane" 
+               target="_blank" 
+               class="gold-btn px-5 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 shadow-md">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>Réserver / Contact</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Section Hero -->
+    <section id="accueil" class="relative min-h-screen flex items-center justify-center pt-20 px-6 bg-white overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="photo.jpg" alt="Dar Soltane Extérieur" class="w-full h-full object-cover opacity-35 scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-white/90 via-white/50 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl text-center space-y-6">
+            <span class="px-5 py-2 rounded-full border border-amber-400 bg-amber-50 text-amber-800 text-xs tracking-widest uppercase font-semibold inline-block">
+                Capacité : 500 Personnes • Prestige & Élégance
+            </span>
+            <h1 class="font-serif-custom text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight">
+                Bienvenue à <span class="gold-gradient-text">Dar Soltane</span>
+            </h1>
+            <p class="text-gray-700 text-base md:text-lg max-w-2xl mx-auto font-medium">
+                La salle idéale pour vos mariages, fiançailles et célébrations. Un espace somptueux conçu pour accueillir jusqu'à 500 invités dans le plus grand confort.
+            </p>
+            
+            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://wa.me/213552745204?text=Bonjour,%20je%20souhaite%20réserver%20une%20date%20à%20Dar%20Soltane" 
+                   target="_blank" 
+                   class="w-full sm:w-auto gold-btn px-8 py-4 rounded-full font-bold flex items-center justify-center gap-3 shadow-xl">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                    <span>Contactez-nous sur WhatsApp</span>
+                </a>
+                <button onclick="openInvitationModal()" class="w-full sm:w-auto gold-outline-btn px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 bg-white/80 backdrop-blur-sm shadow-lg">
+                    <i class="fa-solid fa-envelope-open-text text-amber-600"></i>
+                    <span class="text-amber-800">Générer mon Faire-Part</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Présentation des Espaces -->
+    <section id="espaces" class="py-20 px-6 max-w-7xl mx-auto bg-white">
+        <div class="text-center space-y-3 mb-16">
+            <h2 class="font-serif-custom text-3xl md:text-5xl font-bold gold-gradient-text">Des Installations d'Exception</h2>
+            <p class="text-gray-500 max-w-xl mx-auto text-sm md:text-base">Tout a été pensé pour faire de votre événement un moment magique et inoubliable.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="gold-card rounded-2xl p-6 group">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 text-xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-door-open"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-gray-900">Espace Extérieur & Accueil</h3>
+                <p class="text-gray-500 text-sm">Grand parking, entrée majestueuse et éclairage soigné pour accueillir vos invités.</p>
+            </div>
+
+            <div class="gold-card rounded-2xl p-6 group">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 text-xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-champagne-glasses"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-gray-900">Grande Salle (500 Places)</h3>
+                <p class="text-gray-500 text-sm">Climatisée, somptueuse estrade pour les mariés, tables luxueuses et service impeccable.</p>
+            </div>
+
+            <div class="gold-card rounded-2xl p-6 group">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 text-xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-gray-900">Cuisine Professionnelle</h3>
+                <p class="text-gray-500 text-sm">Entièrement équipée en inox pour recevoir les traiteurs dans les meilleures conditions.</p>
+            </div>
+
+            <div class="gold-card rounded-2xl p-6 group">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 text-xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-compact-disc"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-gray-900">Régie DJ & Scène</h3>
+                <p class="text-gray-500 text-sm">Jeux de lumières spectaculaires, machines à fumée lourde et sonorisation HD.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Galerie d'images et Vidéo -->
+    <section id="galerie" class="py-20 px-6 max-w-7xl mx-auto border-t border-amber-200 bg-white">
+        <div class="text-center space-y-3 mb-12">
+            <h2 class="font-serif-custom text-3xl md:text-5xl font-bold gold-gradient-text">Galerie & Visite Vidéo</h2>
+            <p class="text-gray-500 max-w-xl mx-auto text-sm md:text-base">Plongez au cœur de Dar Soltane.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Images de la galerie -->
+            <div class="gallery-item accueil gold-card rounded-2xl overflow-hidden group">
+                <div class="relative overflow-hidden h-64">
+                    <img src="soltane.jpg" alt="Extérieur Dar Soltane" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="openLightbox(this.src)">
+                </div>
+                <div class="p-4">
+                    <h4 class="font-bold text-gray-900">Façade & Entrée Principale</h4>
+                </div>
+            </div>
+
+            <div class="gallery-item salle gold-card rounded-2xl overflow-hidden group">
+                <div class="relative overflow-hidden h-64">
+                    <img src="dar.jpg" alt="Grande Salle" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="openLightbox(this.src)">
+                </div>
+                <div class="p-4">
+                    <h4 class="font-bold text-gray-900">Estrade & Décoration des Mariés</h4>
+                </div>
+            </div>
+
+            <div class="gallery-item salle gold-card rounded-2xl overflow-hidden group">
+                <div class="relative overflow-hidden h-64">
+                    <img src="tapi.jpg" alt="Tables VIP" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="openLightbox(this.src)">
+                </div>
+                <div class="p-4">
+                    <h4 class="font-bold text-gray-900">Disposition des Tables (500 Places)</h4>
+                </div>
+            </div>
+
+            <div class="gallery-item cuisine gold-card rounded-2xl overflow-hidden group">
+                <div class="relative overflow-hidden h-64">
+                    <img src="table.jpg" alt="Cuisine" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="openLightbox(this.src)">
+                </div>
+                <div class="p-4">
+                    <h4 class="font-bold text-gray-900">Cuisine Traiteur</h4>
+                </div>
+            </div>
+
+            <div class="gallery-item dj gold-card rounded-2xl overflow-hidden group">
+                <div class="relative overflow-hidden h-64">
+                    <img src="acceuil.jpg" alt="Espace DJ" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" onclick="openLightbox(this.src)">
+                </div>
+                <div class="p-4">
+                    <h4 class="font-bold text-gray-900">Ambiance Scène & Lumières</h4>
+                </div>
+            </div>
+
+            <div class="gallery-item video gold-card rounded-2xl overflow-hidden group border-2 border-amber-400">
+                <div class="relative overflow-hidden h-64 bg-black">
+                    <video controls class="w-full h-full object-cover">
+                        <source src="video-salle.mp4" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                </div>
+                <div class="p-4">
+                    <h4 class="font-bold text-gray-900">Visite Vidéo de Dar Soltane</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Localisation & Contact -->
+    <section id="localisation" class="py-24 px-6 max-w-7xl mx-auto bg-white">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <div>
+                    <h2 class="font-serif-custom text-3xl md:text-5xl font-bold gold-gradient-text mb-4">Venez nous rendre visite</h2>
+                    <p class="text-gray-600">Nous serions ravis de vous faire visiter la salle et de discuter de votre projet autour d'un café.</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-location-dot text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-lg">Adresse</h4>
+                            <p class="text-gray-600">N2A, Es Sénia, Oran, Algérie</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-phone text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-lg">Téléphone & WhatsApp</h4>
+                            <p class="text-gray-600">+213 552 74 52 04</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-amber-600 shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-clock text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 text-lg">Horaires de visite</h4>
+                            <p class="text-gray-600">Tous les jours de 10h00 à 18h00 (sur rendez-vous)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="https://wa.me/213552745204?text=Bonjour,%20je%20souhaite%20planifier%20une%20visite%20de%20la%20salle" 
+                   target="_blank" 
+                   class="gold-btn px-8 py-4 rounded-full font-bold inline-flex items-center gap-3 shadow-xl hover:-translate-y-1 transition-transform duration-300">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                    <span>Prendre rendez-vous</span>
+                </a>
+            </div>
+            <!-- Carte Google Maps Intégrée -->
+            <div class="gold-card p-2 rounded-3xl overflow-hidden h-[500px] shadow-2xl">
+                <iframe src="https://maps.google.com/maps?q=Dar%20Soltane%20Es%20Senia%20Oran&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bouton WhatsApp Flottant -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <a href="https://wa.me/213552745204?text=Bonjour,%20je%20souhaite%20réserver%20ou%20avoir%20des%20informations%20sur%20les%20tarifs%20de%20Dar%20Soltane" 
+           target="_blank" 
+           class="flex items-center gap-3 gold-btn py-3.5 px-6 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 border border-amber-300">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+            <span class="hidden sm:inline text-sm font-bold">Discuter sur WhatsApp</span>
+        </a>
+    </div>
+
+    <!-- =========================================
+         MODALE DE CRÉATION DE FAIRE-PART
+         ========================================= -->
+    <div id="invitation-modal" class="fixed inset-0 z-[90] bg-black/80 hidden items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+        
+        <!-- Conteneur principal de la modale -->
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden relative my-8">
+            
+            <!-- Bouton Fermer -->
+            <button onclick="closeInvitationModal()" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 z-10 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center shadow">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <!-- ÉTAPE 1 : LE FORMULAIRE -->
+            <div id="invitation-form-container" class="p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <h3 class="font-serif-custom text-3xl font-bold gold-gradient-text mb-2">Créez votre Faire-Part</h3>
+                    <p class="text-gray-500 text-sm">Remplissez les informations ci-dessous pour générer une invitation personnalisée.</p>
+                </div>
+
+                <form id="invitation-form" onsubmit="generateInvitation(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Nom du Marié</label>
+                            <input type="text" id="input-groom" required placeholder="Ex: Amine" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-gray-50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Nom de la Mariée</label>
+                            <input type="text" id="input-bride" required placeholder="Ex: Sarah" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-gray-50">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Date de l'événement</label>
+                        <input type="date" id="input-date" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-gray-50">
+                    </div>
+                    
+                    <button type="submit" class="w-full gold-btn py-4 rounded-xl font-bold text-lg shadow-xl flex items-center justify-center gap-2 mt-4">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Générer mon invitation</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ÉTAPE 2 : LA CARTE GÉNÉRÉE -->
+            <div id="invitation-preview-container" class="hidden p-4 md:p-8 bg-gray-100">
+                
+                <!-- LA CARTE A IMPRIMER -->
+                <div id="printable-invitation" class="invitation-card w-full max-w-2xl mx-auto p-12 text-center rounded-lg my-4">
+                    <!-- Logo CORRIGÉ : object-contain et max-h pour qu'il soit entier -->
+                    <img src="Logooo.png" alt="Dar Soltane" class="max-h-28 w-auto mx-auto mb-8 opacity-90 object-contain">
+                    
+                    <p class="uppercase tracking-widest text-xs font-bold text-amber-700 mb-2">Nous avons la joie de vous convier au mariage de</p>
+                    
+                    <!-- Noms -->
+                    <div class="my-8 space-y-2">
+                        <h2 class="font-cursive text-5xl md:text-6xl text-gray-900" id="print-groom">Amine</h2>
+                        <span class="text-2xl text-amber-500 font-serif-custom italic">&</span>
+                        <h2 class="font-cursive text-5xl md:text-6xl text-gray-900" id="print-bride">Sarah</h2>
+                    </div>
+
+                    <div class="w-24 h-0.5 bg-amber-400 mx-auto my-6"></div>
+
+                    <!-- Date -->
+                    <p class="text-lg font-serif-custom text-gray-700 mb-1">Le</p>
+                    <p class="text-2xl font-bold text-gray-900 mb-8" id="print-date">Samedi 15 Juin 2026</p>
+
+                    <!-- Lieu -->
+                    <p class="text-sm uppercase tracking-widest text-amber-700 font-bold mb-1">Au sein de la salle</p>
+                    <h3 class="font-serif-custom text-3xl font-bold gold-gradient-text">Dar Soltane</h3>
+                    <p class="text-sm text-gray-500 mt-1">Es Sénia, Oran</p>
+                    
+                    <!-- Texte bas de carte -->
+                    <p class="mt-10 text-xs text-gray-400 italic">Votre présence sera notre plus belle décoration.</p>
+                </div>
+
+                <!-- Boutons d'action pour la carte -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8 max-w-2xl mx-auto no-print">
+                    <button onclick="resetInvitationForm()" class="px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-600 font-bold hover:bg-gray-200 transition-colors">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Modifier
+                    </button>
+                    <button onclick="printInvitation()" class="gold-btn px-8 py-3 rounded-xl font-bold text-lg shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-print"></i> Imprimer la carte
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modale Lightbox pour les photos -->
+    <div id="lightbox" class="fixed inset-0 z-[60] bg-black/85 hidden items-center justify-center p-4 backdrop-blur-md" onclick="closeLightbox()">
+        <div class="relative max-w-4xl max-h-[90vh]">
+            <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain mx-auto border-2 border-amber-400">
+            <button class="absolute -top-10 right-0 text-white text-2xl hover:text-amber-400"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <footer class="py-8 border-t border-amber-200 text-center text-xs text-gray-500 bg-white">
+        <p>© 2026 Dar Soltane - Tous droits réservés.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- GESTION DE LA MUSIQUE ET DE L'ACCUEIL ---
+        const audio = document.getElementById('bg-music');
+
+        function enterSite() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            welcomeScreen.style.opacity = '0';
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+            }, 700);
+            audio.play().catch(e => console.log("Lecture audio bloquée :", e));
+        }
+
+        function toggleAudio() {
+            const icon = document.getElementById('music-icon');
+            if (audio.paused) {
+                audio.play();
+                icon.className = "fa-solid fa-volume-high text-lg";
+            } else {
+                audio.pause();
+                icon.className = "fa-solid fa-volume-xmark text-lg";
+            }
+        }
+
+        // --- GESTION DE LA LIGHTBOX PHOTOS ---
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.remove('hidden');
+            document.getElementById('lightbox').classList.add('flex');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+            document.getElementById('lightbox').classList.remove('flex');
+        }
+
+        // Couper la musique si la vidéo joue
+        const video = document.querySelector('video');
+        let musicWasPlaying = false;
+        if(video) {
+            video.addEventListener('play', () => {
+                musicWasPlaying = !audio.paused;
+                audio.pause();
+                document.getElementById('music-icon').className = "fa-solid fa-volume-xmark text-lg";
+            });
+            const resumeMusic = () => {
+                if (musicWasPlaying) {
+                    audio.play().catch(() => {});
+                    document.getElementById('music-icon').className = "fa-solid fa-volume-high text-lg";
+                }
+                musicWasPlaying = false;
+            };
+            video.addEventListener('pause', resumeMusic);
+            video.addEventListener('ended', resumeMusic);
+        }
+
+        // --- GESTION DU FAIRE-PART (NOUVEAU) ---
+
+        const modal = document.getElementById('invitation-modal');
+        const formContainer = document.getElementById('invitation-form-container');
+        const previewContainer = document.getElementById('invitation-preview-container');
+
+        // Ouvrir la modale
+        function openInvitationModal() {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            formContainer.classList.remove('hidden');
+            previewContainer.classList.add('hidden');
+            document.body.style.overflow = 'hidden'; // Empêcher le défilement du site
+        }
+
+        // Fermer la modale
+        function closeInvitationModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Retour au formulaire
+        function resetInvitationForm() {
+            previewContainer.classList.add('hidden');
+            formContainer.classList.remove('hidden');
+        }
+
+        // Générer la carte
+        function generateInvitation(event) {
+            event.preventDefault(); // Empêcher le rechargement de la page
+
+            // Récupérer les valeurs
+            const groom = document.getElementById('input-groom').value;
+            const bride = document.getElementById('input-bride').value;
+            const dateValue = document.getElementById('input-date').value;
+
+            // Formater la date (YYYY-MM-DD -> JJ Mois AAAA)
+            const dateObj = new Date(dateValue);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = dateObj.toLocaleDateString('fr-FR', options);
+
+            // Injecter les valeurs dans la carte
+            document.getElementById('print-groom').textContent = groom;
+            document.getElementById('print-bride').textContent = bride;
+            
+            // Mettre la première lettre de la date en majuscule
+            document.getElementById('print-date').textContent = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+
+            // Afficher la carte, cacher le formulaire
+            formContainer.classList.add('hidden');
+            previewContainer.classList.remove('hidden');
+        }
+
+        // Lancer l'impression
+        function printInvitation() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
